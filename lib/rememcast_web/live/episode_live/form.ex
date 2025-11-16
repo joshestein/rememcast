@@ -34,18 +34,18 @@ defmodule RememcastWeb.EpisodeLive.Form do
         </div>
       </.form>
 
-      <div id="search-results" phx-update="stream" class="mt-4">
+      <div id="podcast-results" phx-update="stream" class="mt-4">
         <div
-          :for={{id, result} <- @streams.search_results}
+          :for={{id, podcast} <- @streams.podcasts}
           class="flex items-center gap-4 p-2 rounded-lg hover:bg-base-200"
           id={id}
         >
-          <img src={result.artwork} class="w-12 h-12 rounded-md" />
+          <img src={podcast.artwork} class="w-12 h-12 rounded-md" />
           <div class="flex-grow">
-            <div class="font-bold">{result.title}</div>
-            <div class="text-sm opacity-75">{result.author}</div>
+            <div class="font-bold">{podcast.title}</div>
+            <div class="text-sm opacity-75">{podcast.author}</div>
           </div>
-          <.button phx-click="select_podcast" phx-value-id={result.id} class="btn btn-sm">
+          <.button phx-click="select_podcast" phx-value-id={podcast.id} class="btn btn-sm">
             Select
           </.button>
         </div>
@@ -73,7 +73,7 @@ defmodule RememcastWeb.EpisodeLive.Form do
     {:ok,
      socket
      |> assign(:return_to, return_to(params["return_to"]))
-     |> stream(:search_results, [])
+     |> stream(:podcasts, [])
      |> apply_action(socket.assigns.live_action, params)}
   end
 
@@ -110,19 +110,19 @@ defmodule RememcastWeb.EpisodeLive.Form do
 
   def handle_event("search", %{"q" => query}, socket) do
     case search_podcast(query) do
-      {:ok, results} ->
-        results_map = Map.new(results, fn result -> {result.id, result} end)
+      {:ok, podcasts} ->
+        results_map = Map.new(podcasts, fn result -> {result.id, result} end)
 
         {:noreply,
          socket
-         |> stream(:search_results, results, reset: true)
+         |> stream(:podcasts, podcasts, reset: true)
          |> assign(:search_map, results_map)}
 
       {:error, _reason} ->
         {:noreply,
          socket
          |> put_flash(:error, "Podcast search failed")
-         |> stream(:search_results, [], reset: true)
+         |> stream(:podcasts, [], reset: true)
          |> assign(:search_map, %{})}
     end
   end
