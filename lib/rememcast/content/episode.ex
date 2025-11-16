@@ -26,7 +26,8 @@ defmodule Rememcast.Content.Episode do
       :duration,
       :audio_url,
       :guid,
-      :image
+      :image,
+      :podcast_id
     ])
     |> validate_required([
       :title,
@@ -35,7 +36,9 @@ defmodule Rememcast.Content.Episode do
       :duration,
       :audio_url,
       :guid,
-      :image
+      :image,
+      :podcast_id
     ])
+    |> foreign_key_constraint(:podcast_id)
   end
 end
