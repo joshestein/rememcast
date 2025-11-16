@@ -67,20 +67,6 @@ defmodule RememcastWeb.EpisodeLive.Form do
           </.button>
         </div>
       </div>
-
-      <.form for={@form} id="episode-form" phx-change="validate" phx-submit="save">
-        <.input field={@form[:title]} type="text" label="Title" />
-        <.input field={@form[:description]} type="textarea" label="Description" />
-        <.input field={@form[:publish_date]} type="datetime-local" label="Publish date" />
-        <.input field={@form[:duration]} type="number" label="Duration" />
-        <.input field={@form[:audio_url]} type="text" label="Audio url" />
-        <.input field={@form[:guid]} type="text" label="Guid" />
-        <.input field={@form[:image]} type="text" label="Image" />
-        <footer>
-          <.button phx-disable-with="Saving..." variant="primary">Save Episode</.button>
-          <.button navigate={return_path(@return_to, @episode)}>Cancel</.button>
-        </footer>
-      </.form>
     </Layouts.app>
     """
   end
