@@ -189,7 +189,7 @@ defmodule RememcastWeb.PodcastLive.Form do
            params: %{"q" => query}
          ) do
       %{status: 200, body: body} ->
-        results = parse_results(body)
+        results = parse_podcast_results(body)
         {:ok, results}
 
       %{status: status} ->
@@ -197,7 +197,7 @@ defmodule RememcastWeb.PodcastLive.Form do
     end
   end
 
-  defp parse_results(%{"feeds" => feeds}) do
+  defp parse_podcast_results(%{"feeds" => feeds}) do
     Enum.map(feeds, fn feed ->
       %{
         id: feed["id"],
