@@ -86,7 +86,7 @@ defmodule RememcastWeb.EpisodeLive.Form do
 
   defp apply_action(socket, :new, _params) do
     socket
-    |> assign(:page_title, "Add Episode")
+    |> assign(:page_title, "New Episode")
   end
 
   @impl true
