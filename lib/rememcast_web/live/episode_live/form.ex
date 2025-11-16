@@ -236,7 +236,8 @@ defmodule RememcastWeb.EpisodeLive.Form do
         title: feed["title"],
         description: feed["description"],
         author: feed["author"],
-        artwork: feed["artwork"]
+        artwork: feed["artwork"],
+        guid: feed["podcastGuid"]
       }
     end)
   end

@@ -14,7 +14,7 @@ defmodule Rememcast.ContentTest do
       title: nil,
       url: nil,
       artwork: nil,
-      podcast_index_id: nil
+      guid: nil
     }
 
     test "list_podcasts/0 returns all podcasts" do
@@ -34,7 +34,7 @@ defmodule Rememcast.ContentTest do
         title: "some title",
         url: "some url",
         artwork: "some artwork",
-        podcast_index_id: 42
+        guid: "some guid"
       }
 
       assert {:ok, %Podcast{} = podcast} = Content.create_podcast(valid_attrs)
@@ -43,7 +43,7 @@ defmodule Rememcast.ContentTest do
       assert podcast.title == "some title"
       assert podcast.url == "some url"
       assert podcast.artwork == "some artwork"
-      assert podcast.podcast_index_id == 42
+      assert podcast.guid == "some guid"
     end
 
     test "create_podcast/1 with invalid data returns error changeset" do
@@ -59,7 +59,7 @@ defmodule Rememcast.ContentTest do
         title: "some updated title",
         url: "some updated url",
         artwork: "some updated artwork",
-        podcast_index_id: 43
+        guid: "some updated guid"
       }
 
       assert {:ok, %Podcast{} = podcast} = Content.update_podcast(podcast, update_attrs)
@@ -68,7 +68,7 @@ defmodule Rememcast.ContentTest do
       assert podcast.title == "some updated title"
       assert podcast.url == "some updated url"
       assert podcast.artwork == "some updated artwork"
-      assert podcast.podcast_index_id == 43
+      assert podcast.guid == "some updated guid"
     end
 
     test "update_podcast/2 with invalid data returns error changeset" do

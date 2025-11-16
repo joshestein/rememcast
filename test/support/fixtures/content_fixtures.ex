@@ -5,11 +5,6 @@ defmodule Rememcast.ContentFixtures do
   """
 
   @doc """
-  Generate a unique podcast podcast_index_id.
-  """
-  def unique_podcast_podcast_index_id, do: System.unique_integer([:positive])
-
-  @doc """
   Generate a podcast.
   """
   def podcast_fixture(attrs \\ %{}) do
@@ -19,7 +14,7 @@ defmodule Rememcast.ContentFixtures do
         author: "some author",
         description: "some description",
         artwork: "some artwork",
-        podcast_index_id: unique_podcast_podcast_index_id(),
+        guid: "some guid",
         title: "some title",
         url: "some url"
       })

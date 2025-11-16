@@ -54,7 +54,7 @@ defmodule RememcastWeb.PodcastLive.Form do
       <.form for={@form} id="podcast-form" phx-change="validate" phx-submit="save">
         <.input field={@form[:title]} type="text" label="Title" />
         <.input field={@form[:artwork]} type="text" label="Artwork" />
-        <.input field={@form[:podcast_index_id]} type="number" label="Podcast index" />
+        <.input field={@form[:guid]} type="text" label="Guid" />
         <.input field={@form[:description]} type="textarea" label="Description" />
         <.input field={@form[:url]} type="text" label="Url" />
         <.input field={@form[:author]} type="text" label="Author" />

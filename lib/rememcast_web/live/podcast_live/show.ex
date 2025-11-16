@@ -23,7 +23,7 @@ defmodule RememcastWeb.PodcastLive.Show do
       <.list>
         <:item title="Title">{@podcast.title}</:item>
         <:item title="Artwork">{@podcast.artwork}</:item>
-        <:item title="Podcast index">{@podcast.podcast_index_id}</:item>
+        <:item title="Guid">{@podcast.guid}</:item>
         <:item title="Description">{@podcast.description}</:item>
         <:item title="Url">{@podcast.url}</:item>
         <:item title="Author">{@podcast.author}</:item>

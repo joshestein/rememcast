@@ -5,7 +5,7 @@ defmodule Rememcast.Content.Podcast do
   schema "podcasts" do
     field :title, :string
     field :artwork, :string
-    field :podcast_index_id, :integer
+    field :guid, :string
     field :description, :string
     field :url, :string
     field :author, :string
@@ -18,8 +18,8 @@ defmodule Rememcast.Content.Podcast do
   @doc false
   def changeset(podcast, attrs) do
     podcast
-    |> cast(attrs, [:title, :artwork, :podcast_index_id, :description, :url, :author])
-    |> validate_required([:title, :artwork, :podcast_index_id, :description, :url, :author])
-    |> unique_constraint(:podcast_index_id)
+    |> cast(attrs, [:title, :artwork, :guid, :description, :url, :author])
+    |> validate_required([:title, :artwork, :guid, :description, :url, :author])
+    |> unique_constraint(:guid)
   end
 end

@@ -78,7 +78,7 @@ defmodule Rememcast.Content do
     |> Podcast.changeset(attrs)
     |> Repo.insert(
       on_conflict: {:replace_all_except, [:id, :inserted_at]},
-      conflict_target: :podcast_index_id
+      conflict_target: :guid
     )
   end
 

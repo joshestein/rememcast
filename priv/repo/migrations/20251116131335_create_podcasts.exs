@@ -5,7 +5,7 @@ defmodule Rememcast.Repo.Migrations.CreatePodcasts do
     create table(:podcasts) do
       add :title, :string
       add :artwork, :string
-      add :podcast_index_id, :integer
+      add :guid, :string
       add :description, :text
       add :url, :string
       add :author, :string
@@ -13,6 +13,6 @@ defmodule Rememcast.Repo.Migrations.CreatePodcasts do
       timestamps(type: :utc_datetime)
     end
 
-    create unique_index(:podcasts, [:podcast_index_id])
+    create unique_index(:podcasts, [:guid])
   end
 end

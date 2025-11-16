@@ -10,7 +10,7 @@ defmodule RememcastWeb.PodcastLiveTest do
     title: "some title",
     url: "some url",
     artwork: "some artwork",
-    podcast_index_id: 42
+    guid: "some guid"
   }
   @update_attrs %{
     description: "some updated description",
@@ -18,7 +18,7 @@ defmodule RememcastWeb.PodcastLiveTest do
     title: "some updated title",
     url: "some updated url",
     artwork: "some updated artwork",
-    podcast_index_id: 43
+    guid: "some updated guid"
   }
   @invalid_attrs %{
     description: nil,
@@ -26,7 +26,7 @@ defmodule RememcastWeb.PodcastLiveTest do
     title: nil,
     url: nil,
     artwork: nil,
-    podcast_index_id: nil
+    guid: nil
   }
   defp create_podcast(_) do
     podcast = podcast_fixture()
