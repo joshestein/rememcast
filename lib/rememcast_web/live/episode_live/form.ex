@@ -58,7 +58,7 @@ defmodule RememcastWeb.EpisodeLive.Form do
         <.input field={@form[:duration]} type="number" label="Duration" />
         <.input field={@form[:audio_url]} type="text" label="Audio url" />
         <.input field={@form[:guid]} type="text" label="Guid" />
-        <.input field={@form[:episode_index_id]} type="number" label="Episode index" />
+        <.input field={@form[:episode_number]} type="number" label="Episode index" />
         <footer>
           <.button phx-disable-with="Saving..." variant="primary">Save Episode</.button>
           <.button navigate={return_path(@return_to, @episode)}>Cancel</.button>
@@ -249,7 +249,7 @@ defmodule RememcastWeb.EpisodeLive.Form do
         duration: item["duration"],
         audio_url: item["enclosureUrl"],
         guid: item["guid"],
-        episode_index_id: item["episode"]
+        episode_number: item["episode"],
       }
     end)
   end

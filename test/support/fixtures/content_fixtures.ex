@@ -38,7 +38,7 @@ defmodule Rememcast.ContentFixtures do
         audio_url: "some audio_url",
         description: "some description",
         duration: 42,
-        episode_index_id: 42,
+        episode_number: 42,
         guid: "some guid",
         publish_date: ~U[2025-11-15 16:43:00Z],
         title: "some title"

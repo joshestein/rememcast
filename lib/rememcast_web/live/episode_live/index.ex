@@ -27,7 +27,7 @@ defmodule RememcastWeb.EpisodeLive.Index do
         <:col :let={{_id, episode}} label="Duration">{episode.duration}</:col>
         <:col :let={{_id, episode}} label="Audio url">{episode.audio_url}</:col>
         <:col :let={{_id, episode}} label="Guid">{episode.guid}</:col>
-        <:col :let={{_id, episode}} label="Episode index">{episode.episode_index_id}</:col>
+        <:col :let={{_id, episode}} label="Episode number">{episode.episode_number}</:col>
         <:action :let={{_id, episode}}>
           <div class="sr-only">
             <.link navigate={~p"/episodes/#{episode}"}>Show</.link>

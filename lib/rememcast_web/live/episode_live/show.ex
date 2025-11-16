@@ -27,7 +27,7 @@ defmodule RememcastWeb.EpisodeLive.Show do
         <:item title="Duration">{@episode.duration}</:item>
         <:item title="Audio url">{@episode.audio_url}</:item>
         <:item title="Guid">{@episode.guid}</:item>
-        <:item title="Episode index">{@episode.episode_index_id}</:item>
+        <:item title="Episode number">{@episode.episode_number}</:item>
       </.list>
     </Layouts.app>
     """

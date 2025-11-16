@@ -94,7 +94,15 @@ defmodule Rememcast.ContentTest do
 
     import Rememcast.ContentFixtures
 
-    @invalid_attrs %{description: nil, title: nil, publish_date: nil, duration: nil, audio_url: nil, guid: nil, episode_index_id: nil}
+    @invalid_attrs %{
+      description: nil,
+      title: nil,
+      publish_date: nil,
+      duration: nil,
+      audio_url: nil,
+      guid: nil,
+      episode_number: nil
+    }
 
     test "list_episodes/0 returns all episodes" do
       episode = episode_fixture()
@@ -107,7 +115,15 @@ defmodule Rememcast.ContentTest do
     end
 
     test "create_episode/1 with valid data creates a episode" do
-      valid_attrs = %{description: "some description", title: "some title", publish_date: ~U[2025-11-15 16:43:00Z], duration: 42, audio_url: "some audio_url", guid: "some guid", episode_index_id: 42}
+      valid_attrs = %{
+        description: "some description",
+        title: "some title",
+        publish_date: ~U[2025-11-15 16:43:00Z],
+        duration: 42,
+        audio_url: "some audio_url",
+        guid: "some guid",
+        episode_number: 42
+      }
 
       assert {:ok, %Episode{} = episode} = Content.create_episode(valid_attrs)
       assert episode.description == "some description"
@@ -116,7 +132,7 @@ defmodule Rememcast.ContentTest do
       assert episode.duration == 42
       assert episode.audio_url == "some audio_url"
       assert episode.guid == "some guid"
-      assert episode.episode_index_id == 42
+      assert episode.episode_number == 42
     end
 
     test "create_episode/1 with invalid data returns error changeset" do
@@ -125,7 +141,16 @@ defmodule Rememcast.ContentTest do
 
     test "update_episode/2 with valid data updates the episode" do
       episode = episode_fixture()
-      update_attrs = %{description: "some updated description", title: "some updated title", publish_date: ~U[2025-11-16 16:43:00Z], duration: 43, audio_url: "some updated audio_url", guid: "some updated guid", episode_index_id: 43}
+
+      update_attrs = %{
+        description: "some updated description",
+        title: "some updated title",
+        publish_date: ~U[2025-11-16 16:43:00Z],
+        duration: 43,
+        audio_url: "some updated audio_url",
+        guid: "some updated guid",
+        episode_number: 43
+      }
 
       assert {:ok, %Episode{} = episode} = Content.update_episode(episode, update_attrs)
       assert episode.description == "some updated description"
@@ -134,7 +159,7 @@ defmodule Rememcast.ContentTest do
       assert episode.duration == 43
       assert episode.audio_url == "some updated audio_url"
       assert episode.guid == "some updated guid"
-      assert episode.episode_index_id == 43
+      assert episode.episode_number == 43
     end
 
     test "update_episode/2 with invalid data returns error changeset" do

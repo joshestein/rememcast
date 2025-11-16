@@ -4,9 +4,33 @@ defmodule RememcastWeb.EpisodeLiveTest do
   import Phoenix.LiveViewTest
   import Rememcast.ContentFixtures
 
-  @create_attrs %{description: "some description", title: "some title", publish_date: "2025-11-15T16:43:00Z", duration: 42, audio_url: "some audio_url", guid: "some guid", episode_index_id: 42}
-  @update_attrs %{description: "some updated description", title: "some updated title", publish_date: "2025-11-16T16:43:00Z", duration: 43, audio_url: "some updated audio_url", guid: "some updated guid", episode_index_id: 43}
-  @invalid_attrs %{description: nil, title: nil, publish_date: nil, duration: nil, audio_url: nil, guid: nil, episode_index_id: nil}
+  @create_attrs %{
+    description: "some description",
+    title: "some title",
+    publish_date: "2025-11-15T16:43:00Z",
+    duration: 42,
+    audio_url: "some audio_url",
+    guid: "some guid",
+    episode_number: 42
+  }
+  @update_attrs %{
+    description: "some updated description",
+    title: "some updated title",
+    publish_date: "2025-11-16T16:43:00Z",
+    duration: 43,
+    audio_url: "some updated audio_url",
+    guid: "some updated guid",
+    episode_number: 43
+  }
+  @invalid_attrs %{
+    description: nil,
+    title: nil,
+    publish_date: nil,
+    duration: nil,
+    audio_url: nil,
+    guid: nil,
+    episode_number: nil
+  }
   defp create_episode(_) do
     episode = episode_fixture()
 

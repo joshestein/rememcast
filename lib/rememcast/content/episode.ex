@@ -9,7 +9,7 @@ defmodule Rememcast.Content.Episode do
     field :duration, :integer
     field :audio_url, :string
     field :guid, :string
-    field :episode_index_id, :integer
+    field :episode_number, :integer
 
     belongs_to :podcast, Rememcast.Content.Podcast
 
@@ -26,7 +26,7 @@ defmodule Rememcast.Content.Episode do
       :duration,
       :audio_url,
       :guid,
-      :episode_index_id
+      :episode_number
     ])
     |> validate_required([
       :title,
@@ -35,7 +35,7 @@ defmodule Rememcast.Content.Episode do
       :duration,
       :audio_url,
       :guid,
-      :episode_index_id
+      :episode_number
     ])
   end
 end
