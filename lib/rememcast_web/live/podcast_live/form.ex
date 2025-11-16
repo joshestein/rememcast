@@ -10,8 +10,45 @@ defmodule RememcastWeb.PodcastLive.Form do
     <Layouts.app flash={@flash}>
       <.header>
         {@page_title}
-        <:subtitle>Use this form to manage podcast records in your database.</:subtitle>
+        <:subtitle>Search for new podcasts.</:subtitle>
       </.header>
+
+      <.form id="search-form" phx-submit="search">
+        <div class="flex flex-col gap-2">
+          <label class="input input-md">
+            <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <g
+                stroke-linejoin="round"
+                stroke-linecap="round"
+                stroke-width="2.5"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </g>
+            </svg>
+            <input name="q" type="search" class="grow" placeholder="What are you listening to?" />
+          </label>
+          <.button phx-disable-with="Searching..." variant="primary">Search</.button>
+        </div>
+      </.form>
+
+      <%!-- <div id="search-results" phx-update class="mt-4">
+        <div
+          :for={result <- @search_results}
+          class="flex items-center gap-4 p-2 rounded-lg hover:bg-base-200"
+        >
+          <img src={result["image_url"]} class="w-12 h-12 rounded-md" />
+          <div class="flex-grow">
+            <div class="font-bold">{result["title"]}</div>
+            <div class="text-sm opacity-75">{result["author"]}</div>
+          </div>
+          <.button phx-click="select_podcast" phx-value-id={result["id"]} class="btn btn-sm">
+            Select
+          </.button>
+        </div>
+      </div> --%>
 
       <.form for={@form} id="podcast-form" phx-change="validate" phx-submit="save">
         <.input field={@form[:title]} type="text" label="Title" />
@@ -34,6 +71,7 @@ defmodule RememcastWeb.PodcastLive.Form do
     {:ok,
      socket
      |> assign(:return_to, return_to(params["return_to"]))
+     |> assign(:search_results, [])
      |> apply_action(socket.assigns.live_action, params)}
   end
 
@@ -53,7 +91,7 @@ defmodule RememcastWeb.PodcastLive.Form do
     podcast = %Podcast{}
 
     socket
-    |> assign(:page_title, "New Podcast")
+    |> assign(:page_title, "Add Podcast")
     |> assign(:podcast, podcast)
     |> assign(:form, to_form(Content.change_podcast(podcast)))
   end
@@ -66,6 +104,19 @@ defmodule RememcastWeb.PodcastLive.Form do
 
   def handle_event("save", %{"podcast" => podcast_params}, socket) do
     save_podcast(socket, socket.assigns.live_action, podcast_params)
+  end
+
+  def handle_event("search", %{"q" => query}, socket) do
+    case search_podcast(query) do
+      {:ok, results} ->
+        {:noreply, assign(socket, search_results: results)}
+
+      {:error, _reason} ->
+        {:noreply,
+         socket
+         |> put_flash(:error, "Podcast search failed")
+         |> assign(search_results: [])}
+    end
   end
 
   defp save_podcast(socket, :edit, podcast_params) do
@@ -92,6 +143,28 @@ defmodule RememcastWeb.PodcastLive.Form do
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}
     end
+  end
+
+  defp search_podcast(query) do
+    # TODO call API with query
+    results = [
+      %{
+        "id" => 1,
+        "title" => "Elixir Talk",
+        "description" => "A podcast about Elixir programming.",
+        "author" => "Elixir Community",
+        "image_url" => "https://example.com/elixir_talk.jpg"
+      },
+      %{
+        "id" => 2,
+        "title" => "Phoenix Framework",
+        "description" => "All about the Phoenix web framework.",
+        "author" => "Phoenix Team",
+        "image_url" => "https://example.com/phoenix_framework.jpg"
+      }
+    ]
+
+    {:ok, results}
   end
 
   defp return_path("index", _podcast), do: ~p"/podcasts"
