@@ -60,7 +60,7 @@ defmodule RememcastWeb.EpisodeLive.Form do
           <img src={episode.image} class="w-12 h-12 rounded-md" />
           <div class="flex-grow">
             <div class="font-bold">{episode.title}</div>
-            <div class="text-sm opacity-75">{episode.description}</div>
+            <div class="text-sm opacity-75">{strip_html(episode.description)}</div>
           </div>
           <.button phx-click="select_episode" phx-value-id={episode.id} class="btn btn-sm">
             Select
@@ -278,6 +278,12 @@ defmodule RememcastWeb.EpisodeLive.Form do
       }
     end)
   end
+
+  defp strip_html(html) when is_binary(html) do
+    Regex.replace(~r/<[^>]*>/, html, "")
+  end
+
+  defp strip_html(_), do: ""
 
   defp return_path("index", _episode), do: ~p"/episodes"
   defp return_path("show", episode), do: ~p"/episodes/#{episode}"
