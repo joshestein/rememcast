@@ -122,7 +122,8 @@ defmodule Rememcast.ContentTest do
         duration: 42,
         audio_url: "some audio_url",
         guid: "some guid",
-        image: "some image"
+        image: "some image",
+        podcast_id: podcast_fixture().id
       }
 
       assert {:ok, %Episode{} = episode} = Content.create_episode(valid_attrs)

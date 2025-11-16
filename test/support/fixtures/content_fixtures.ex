@@ -36,7 +36,8 @@ defmodule Rememcast.ContentFixtures do
         guid: "some guid",
         image: "some image",
         publish_date: ~U[2025-11-15 16:43:00Z],
-        title: "some title"
+        title: "some title",
+        podcast_id: podcast_fixture().id
       })
       |> Rememcast.Content.create_episode()
 
