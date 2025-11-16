@@ -11,7 +11,8 @@ defmodule RememcastWeb.EpisodeLiveTest do
     duration: 42,
     audio_url: "some audio_url",
     guid: "some guid",
-    episode_number: 42
+    episode_number: 42,
+    image: "some image"
   }
   @update_attrs %{
     description: "some updated description",
@@ -20,7 +21,8 @@ defmodule RememcastWeb.EpisodeLiveTest do
     duration: 43,
     audio_url: "some updated audio_url",
     guid: "some updated guid",
-    episode_number: 43
+    episode_number: 43,
+    image: "some updated image"
   }
   @invalid_attrs %{
     description: nil,
@@ -29,7 +31,8 @@ defmodule RememcastWeb.EpisodeLiveTest do
     duration: nil,
     audio_url: nil,
     guid: nil,
-    episode_number: nil
+    episode_number: nil,
+    image: nil
   }
   defp create_episode(_) do
     episode = episode_fixture()

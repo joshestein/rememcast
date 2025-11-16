@@ -59,6 +59,7 @@ defmodule RememcastWeb.EpisodeLive.Form do
         <.input field={@form[:audio_url]} type="text" label="Audio url" />
         <.input field={@form[:guid]} type="text" label="Guid" />
         <.input field={@form[:episode_number]} type="number" label="Episode index" />
+        <.input field={@form[:image]} type="text" label="Image" />
         <footer>
           <.button phx-disable-with="Saving..." variant="primary">Save Episode</.button>
           <.button navigate={return_path(@return_to, @episode)}>Cancel</.button>
@@ -250,6 +251,7 @@ defmodule RememcastWeb.EpisodeLive.Form do
         audio_url: item["enclosureUrl"],
         guid: item["guid"],
         episode_number: item["episode"],
+        image: item["image"]
       }
     end)
   end

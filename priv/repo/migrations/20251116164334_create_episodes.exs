@@ -10,6 +10,7 @@ defmodule Rememcast.Repo.Migrations.CreateEpisodes do
       add :audio_url, :string
       add :guid, :string
       add :episode_number, :integer
+      add :image, :string
       add :podcast_id, references(:podcasts, on_delete: :nothing)
 
       timestamps(type: :utc_datetime)

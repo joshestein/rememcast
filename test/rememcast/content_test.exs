@@ -101,7 +101,8 @@ defmodule Rememcast.ContentTest do
       duration: nil,
       audio_url: nil,
       guid: nil,
-      episode_number: nil
+      episode_number: nil,
+      image: nil
     }
 
     test "list_episodes/0 returns all episodes" do
@@ -122,7 +123,8 @@ defmodule Rememcast.ContentTest do
         duration: 42,
         audio_url: "some audio_url",
         guid: "some guid",
-        episode_number: 42
+        episode_number: 42,
+        image: "some image"
       }
 
       assert {:ok, %Episode{} = episode} = Content.create_episode(valid_attrs)
@@ -133,6 +135,7 @@ defmodule Rememcast.ContentTest do
       assert episode.audio_url == "some audio_url"
       assert episode.guid == "some guid"
       assert episode.episode_number == 42
+      assert episode.image == "some image"
     end
 
     test "create_episode/1 with invalid data returns error changeset" do
@@ -149,7 +152,8 @@ defmodule Rememcast.ContentTest do
         duration: 43,
         audio_url: "some updated audio_url",
         guid: "some updated guid",
-        episode_number: 43
+        episode_number: 43,
+        image: "some updated image"
       }
 
       assert {:ok, %Episode{} = episode} = Content.update_episode(episode, update_attrs)
@@ -160,6 +164,7 @@ defmodule Rememcast.ContentTest do
       assert episode.audio_url == "some updated audio_url"
       assert episode.guid == "some updated guid"
       assert episode.episode_number == 43
+      assert episode.image == "some updated image"
     end
 
     test "update_episode/2 with invalid data returns error changeset" do
