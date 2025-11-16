@@ -22,6 +22,14 @@ defmodule RememcastWeb.EpisodeLive.Index do
         rows={@streams.episodes}
         row_click={fn {_id, episode} -> JS.navigate(~p"/episodes/#{episode}") end}
       >
+        <%!-- The image is often super slow to load (> 0.5s, so for now let's leave it out) --%>
+        <%!-- <:col :let={{_id, episode}}>
+          <img
+            src={episode.image}
+            alt="Episode image"
+            class="h-16 w-16 rounded-md object-cover"
+          />
+        </:col> --%>
         <:col :let={{_id, episode}} label="Podcast">{episode.podcast.title}</:col>
         <:col :let={{_id, episode}} label="Title">{episode.title}</:col>
         <:col :let={{_id, episode}} label="Description">{Html.strip_html(episode.description)}</:col>
