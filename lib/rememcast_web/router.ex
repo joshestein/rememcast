@@ -19,11 +19,6 @@ defmodule RememcastWeb.Router do
 
     get "/", PageController, :home
 
-    live "/podcasts", PodcastLive.Index, :index
-    live "/podcasts/new", PodcastLive.Form, :new
-    live "/podcasts/:id", PodcastLive.Show, :show
-    live "/podcasts/:id/edit", PodcastLive.Form, :edit
-
     live "/episodes", EpisodeLive.Index, :index
     live "/episodes/new", EpisodeLive.Form, :new
     live "/episodes/:id", EpisodeLive.Show, :show
