@@ -126,6 +126,12 @@ defmodule Rememcast.Content do
     Repo.all(Episode)
   end
 
+  def list_episodes_with_podcast do
+    Episode
+    |> Repo.all()
+    |> Repo.preload(:podcast)
+  end
+
   @doc """
   Gets a single episode.
 

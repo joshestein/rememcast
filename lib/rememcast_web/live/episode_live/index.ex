@@ -22,6 +22,7 @@ defmodule RememcastWeb.EpisodeLive.Index do
         rows={@streams.episodes}
         row_click={fn {_id, episode} -> JS.navigate(~p"/episodes/#{episode}") end}
       >
+        <:col :let={{_id, episode}} label="Podcast">{episode.podcast.title}</:col>
         <:col :let={{_id, episode}} label="Title">{episode.title}</:col>
         <:col :let={{_id, episode}} label="Description">{Html.strip_html(episode.description)}</:col>
         <:action :let={{_id, episode}}>
@@ -60,6 +61,6 @@ defmodule RememcastWeb.EpisodeLive.Index do
   end
 
   defp list_episodes() do
-    Content.list_episodes()
+    Content.list_episodes_with_podcast()
   end
 end
