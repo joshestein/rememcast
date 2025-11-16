@@ -2,6 +2,7 @@ defmodule RememcastWeb.EpisodeLive.Index do
   use RememcastWeb, :live_view
 
   alias Rememcast.Content
+  alias Rememcast.Html
 
   @impl true
   def render(assigns) do
@@ -22,12 +23,7 @@ defmodule RememcastWeb.EpisodeLive.Index do
         row_click={fn {_id, episode} -> JS.navigate(~p"/episodes/#{episode}") end}
       >
         <:col :let={{_id, episode}} label="Title">{episode.title}</:col>
-        <:col :let={{_id, episode}} label="Description">{episode.description}</:col>
-        <:col :let={{_id, episode}} label="Publish date">{episode.publish_date}</:col>
-        <:col :let={{_id, episode}} label="Duration">{episode.duration}</:col>
-        <:col :let={{_id, episode}} label="Audio url">{episode.audio_url}</:col>
-        <:col :let={{_id, episode}} label="Guid">{episode.guid}</:col>
-        <:col :let={{_id, episode}} label="Image">{episode.image}</:col>
+        <:col :let={{_id, episode}} label="Description">{Html.strip_html(episode.description)}</:col>
         <:action :let={{_id, episode}}>
           <div class="sr-only">
             <.link navigate={~p"/episodes/#{episode}"}>Show</.link>
