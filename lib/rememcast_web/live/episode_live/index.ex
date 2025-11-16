@@ -33,7 +33,7 @@ defmodule RememcastWeb.EpisodeLive.Index do
           <.link
             phx-click={JS.push("delete", value: %{id: episode.id}) |> hide("##{id}")}
             data-confirm="Are you sure?"
-            class="flex items-center gap-1 text-warning"
+            class="text-warning flex items-center gap-1"
           >
             <.icon name="hero-trash" /> Delete
           </.link>

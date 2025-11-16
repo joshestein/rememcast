@@ -37,10 +37,10 @@ defmodule RememcastWeb.PodcastLive.Form do
       <div id="search-results" phx-update="stream" class="mt-4">
         <div
           :for={{id, result} <- @streams.search_results}
-          class="flex items-center gap-4 p-2 rounded-lg hover:bg-base-200"
+          class="flex items-center gap-4 rounded-lg p-2 hover:bg-base-200"
           id={id}
         >
-          <img src={result.artwork} class="w-12 h-12 rounded-md" />
+          <img src={result.artwork} class="h-12 w-12 rounded-md" />
           <div class="flex-grow">
             <div class="font-bold">{result.title}</div>
             <div class="text-sm opacity-75">{result.author}</div>

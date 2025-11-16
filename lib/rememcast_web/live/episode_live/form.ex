@@ -38,10 +38,10 @@ defmodule RememcastWeb.EpisodeLive.Form do
       <div id="podcast-results" phx-update="stream" class="mt-4">
         <div
           :for={{id, podcast} <- @streams.podcasts}
-          class="flex items-center gap-4 p-2 rounded-lg hover:bg-base-200"
+          class="flex items-center gap-4 rounded-lg p-2 hover:bg-base-200"
           id={id}
         >
-          <img src={podcast.artwork} class="w-12 h-12 rounded-md" />
+          <img src={podcast.artwork} class="h-12 w-12 rounded-md" />
           <div class="flex-grow">
             <div class="font-bold">{podcast.title}</div>
             <div class="text-sm opacity-75">{podcast.author}</div>
@@ -55,10 +55,10 @@ defmodule RememcastWeb.EpisodeLive.Form do
       <div id="episode-results" phx-update="stream" class="mt-4">
         <div
           :for={{id, episode} <- @streams.episodes}
-          class="flex items-center gap-4 p-2 rounded-lg hover:bg-base-200"
+          class="flex items-center gap-4 rounded-lg p-2 hover:bg-base-200"
           id={id}
         >
-          <img src={episode.image} class="w-12 h-12 rounded-md" />
+          <img src={episode.image} class="h-12 w-12 rounded-md" />
           <div class="flex-grow">
             <div class="font-bold">{episode.title}</div>
             <div class="text-sm opacity-75">{Html.strip_html(episode.description)}</div>
