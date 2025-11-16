@@ -27,7 +27,6 @@ defmodule RememcastWeb.Router do
     live "/episodes", EpisodeLive.Index, :index
     live "/episodes/new", EpisodeLive.Form, :new
     live "/episodes/:id", EpisodeLive.Show, :show
-    live "/episodes/:id/edit", EpisodeLive.Form, :edit
   end
 
   # Other scopes may use custom stacks.

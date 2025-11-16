@@ -28,7 +28,6 @@ defmodule RememcastWeb.EpisodeLive.Index do
           <div class="sr-only">
             <.link navigate={~p"/episodes/#{episode}"}>Show</.link>
           </div>
-          <.link navigate={~p"/episodes/#{episode}/edit"}>Edit</.link>
         </:action>
         <:action :let={{id, episode}}>
           <.link

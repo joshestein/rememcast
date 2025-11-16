@@ -14,9 +14,6 @@ defmodule RememcastWeb.EpisodeLive.Show do
           <.button navigate={~p"/episodes"}>
             <.icon name="hero-arrow-left" />
           </.button>
-          <.button variant="primary" navigate={~p"/episodes/#{@episode}/edit?return_to=show"}>
-            <.icon name="hero-pencil-square" /> Edit episode
-          </.button>
         </:actions>
       </.header>
 
