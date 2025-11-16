@@ -13,7 +13,7 @@ defmodule RememcastWeb.EpisodeLive.Form do
         <:subtitle>Search for new episodes.</:subtitle>
       </.header>
 
-      <.form id="search-form" phx-submit="search">
+      <.form for={%{}} id="search-form" phx-submit="search">
         <div class="flex flex-col gap-2">
           <label class="input input-md">
             <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
