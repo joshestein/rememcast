@@ -40,7 +40,7 @@ defmodule RememcastWeb.PodcastLive.Form do
           class="flex items-center gap-4 p-2 rounded-lg hover:bg-base-200"
           id={id}
         >
-          <img src={result.image_url} class="w-12 h-12 rounded-md" />
+          <img src={result.artwork} class="w-12 h-12 rounded-md" />
           <div class="flex-grow">
             <div class="font-bold">{result.title}</div>
             <div class="text-sm opacity-75">{result.author}</div>
