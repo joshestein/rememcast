@@ -157,9 +157,12 @@ defmodule RememcastWeb.EpisodeLive.Form do
       selected_podcast ->
         case search_podcast_episode(selected_podcast.id) do
           {:ok, episodes} ->
+            episode_map = Map.new(episodes, fn result -> {result.id, result} end)
+
             {:noreply,
              socket
              |> assign(:selected_podcast, selected_podcast)
+             |> assign(:episode_map, episode_map)
              |> stream(:podcasts, [], reset: true)
              |> stream(:episodes, episodes, reset: true)}
 
@@ -167,6 +170,7 @@ defmodule RememcastWeb.EpisodeLive.Form do
             {:noreply,
              socket
              |> put_flash(:error, "Podcast episode search failed")
+             |> assign(:episode_map, %{})
              |> stream(:episodes, [], reset: true)}
         end
     end
