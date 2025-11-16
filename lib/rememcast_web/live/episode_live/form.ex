@@ -84,15 +84,6 @@ defmodule RememcastWeb.EpisodeLive.Form do
   defp return_to("show"), do: "show"
   defp return_to(_), do: "index"
 
-  defp apply_action(socket, :edit, %{"id" => id}) do
-    episode = Content.get_episode!(id)
-
-    socket
-    |> assign(:page_title, "Edit Episode")
-    |> assign(:episode, episode)
-    |> assign(:form, to_form(Content.change_episode(episode)))
-  end
-
   defp apply_action(socket, :new, _params) do
     episode = %Episode{}
 
@@ -103,15 +94,6 @@ defmodule RememcastWeb.EpisodeLive.Form do
   end
 
   @impl true
-  def handle_event("validate", %{"episode" => episode_params}, socket) do
-    changeset = Content.change_episode(socket.assigns.episode, episode_params)
-    {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
-  end
-
-  def handle_event("save", %{"episode" => episode_params}, socket) do
-    save_episode(socket, socket.assigns.live_action, episode_params)
-  end
-
   def handle_event("search", %{"q" => query}, socket) do
     case search_podcast(query) do
       {:ok, podcasts} ->
@@ -173,19 +155,6 @@ defmodule RememcastWeb.EpisodeLive.Form do
 
       selected_episode ->
         save_episode(socket, :new, selected_episode)
-    end
-  end
-
-  defp save_episode(socket, :edit, episode_params) do
-    case Content.update_episode(socket.assigns.episode, episode_params) do
-      {:ok, episode} ->
-        {:noreply,
-         socket
-         |> put_flash(:info, "Episode updated successfully")
-         |> push_navigate(to: return_path(socket.assigns.return_to, episode))}
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, form: to_form(changeset))}
     end
   end
 
