@@ -146,9 +146,9 @@ defmodule RememcastWeb.EpisodeLive.Form do
   end
 
   def handle_event("select_podcast", %{"id" => id}, socket) do
-    selected_podcast = String.to_integer(id)
+    podcast_id = String.to_integer(id)
 
-    case Map.get(socket.assigns.podcast_map, selected_podcast) do
+    case Map.get(socket.assigns.podcast_map, podcast_id) do
       nil ->
         {:noreply,
          socket
