@@ -147,25 +147,42 @@ defmodule RememcastWeb.PodcastLive.Form do
   end
 
   defp search_podcast(query) do
-    # TODO call API with query
-    results = [
-      %{
-        id: 1,
-        title: "Elixir Talk",
-        description: "A podcast about Elixir programming.",
-        author: "Elixir Community",
-        image_url: "https://example.com/elixir_talk.jpg"
-      },
-      %{
-        id: 2,
-        title: "Phoenix Framework",
-        description: "All about the Phoenix web framework.",
-        author: "Phoenix Team",
-        image_url: "https://example.com/phoenix_framework.jpg"
-      }
-    ]
+    api_key = Application.get_env(:rememcast, :podcast_index_api_key)
+    secret_key = Application.get_env(:rememcast, :podcast_index_secret_key)
+    unix_timestamp = System.os_time(:second)
 
-    {:ok, results}
+    sha1_hash =
+      :crypto.hash(:sha, "#{api_key}#{secret_key}#{unix_timestamp}")
+      |> Base.encode16(case: :lower)
+
+    case Req.get!("https://api.podcastindex.org/api/1.0/search/byterm",
+           headers: [
+             {"User-Agent", "RememCast/1.0"},
+             {"X-Auth-Key", api_key},
+             {"X-Auth-Date", unix_timestamp},
+             {"Authorization", sha1_hash}
+           ],
+           params: %{"q" => query}
+         ) do
+      %{status: 200, body: body} ->
+        results = parse_results(body)
+        {:ok, results}
+
+      %{status: status} ->
+        {:error, "Podcast Index API returned status #{status}"}
+    end
+  end
+
+  defp parse_results(%{"feeds" => feeds}) do
+    Enum.map(feeds, fn feed ->
+      %{
+        id: feed["id"],
+        title: feed["title"],
+        description: feed["description"],
+        author: feed["author"],
+        artwork: feed["artwork"]
+      }
+    end)
   end
 
   defp return_path("index", _podcast), do: ~p"/podcasts"
