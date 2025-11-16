@@ -73,6 +73,15 @@ defmodule Rememcast.Content do
     |> Repo.update()
   end
 
+  def upsert_podcast(attrs) do
+    %Podcast{}
+    |> Podcast.changeset(attrs)
+    |> Repo.insert(
+      on_conflict: {:replace_all_except, [:id, :inserted_at]},
+      conflict_target: :podcast_index_id
+    )
+  end
+
   @doc """
   Deletes a podcast.
 
