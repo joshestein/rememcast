@@ -85,12 +85,8 @@ defmodule RememcastWeb.EpisodeLive.Form do
   defp return_to(_), do: "index"
 
   defp apply_action(socket, :new, _params) do
-    episode = %Episode{}
-
     socket
     |> assign(:page_title, "Add Episode")
-    |> assign(:episode, episode)
-    |> assign(:form, to_form(Content.change_episode(episode)))
   end
 
   @impl true
