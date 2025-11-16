@@ -155,19 +155,25 @@ defmodule RememcastWeb.EpisodeLive.Form do
   end
 
   defp save_episode(socket, :new, episode_params) do
-    {:ok, podcast} = Content.upsert_podcast(socket.assigns.selected_podcast)
+    case Content.upsert_podcast(socket.assigns.selected_podcast) do
+      {:ok, podcast} ->
+        episode_params = Map.put(episode_params, :podcast_id, podcast.id)
 
-    episode_params = Map.put(episode_params, :podcast_id, podcast.id)
+        case Content.create_episode(episode_params) do
+          {:ok, episode} ->
+            {:noreply,
+             socket
+             |> put_flash(:info, "Episode created successfully")
+             |> push_navigate(to: return_path(socket.assigns.return_to, episode))}
 
-    case Content.create_episode(episode_params) do
-      {:ok, episode} ->
+          {:error, %Ecto.Changeset{} = changeset} ->
+            {:noreply, assign(socket, form: to_form(changeset))}
+        end
+
+      {:error, _changeset} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Episode created successfully")
-         |> push_navigate(to: return_path(socket.assigns.return_to, episode))}
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, form: to_form(changeset))}
+         |> put_flash(:error, "Failed to save podcast")}
     end
   end
 
