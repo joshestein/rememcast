@@ -245,7 +245,7 @@ defmodule RememcastWeb.EpisodeLive.Form do
         id: item["id"],
         title: item["title"],
         description: item["description"],
-        publish_date: item["datePublished"],
+        publish_date: DateTime.from_unix!(item["datePublished"]),
         duration: item["duration"],
         audio_url: item["enclosureUrl"],
         guid: item["guid"],
