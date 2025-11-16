@@ -176,6 +176,20 @@ defmodule RememcastWeb.EpisodeLive.Form do
     end
   end
 
+  def handle_event("select_episode", %{"id" => id}, socket) do
+    episode_id = String.to_integer(id)
+
+    case Map.get(socket.assigns.episode_map, episode_id) do
+      nil ->
+        {:noreply,
+         socket
+         |> put_flash(:error, "Selected episode not found")}
+
+      selected_episode ->
+        save_episode(socket, :new, selected_episode)
+    end
+  end
+
   defp save_episode(socket, :edit, episode_params) do
     case Content.update_episode(socket.assigns.episode, episode_params) do
       {:ok, episode} ->
@@ -190,6 +204,10 @@ defmodule RememcastWeb.EpisodeLive.Form do
   end
 
   defp save_episode(socket, :new, episode_params) do
+    {:ok, podcast} = Content.upsert_podcast(socket.assigns.selected_podcast)
+
+    episode_params = Map.put(episode_params, :podcast_id, podcast.id)
+
     case Content.create_episode(episode_params) do
       {:ok, episode} ->
         {:noreply,
