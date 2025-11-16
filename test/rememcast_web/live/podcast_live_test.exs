@@ -4,9 +4,30 @@ defmodule RememcastWeb.PodcastLiveTest do
   import Phoenix.LiveViewTest
   import Rememcast.ContentFixtures
 
-  @create_attrs %{description: "some description", author: "some author", title: "some title", url: "some url", image_url: "some image_url", podcast_index_id: 42}
-  @update_attrs %{description: "some updated description", author: "some updated author", title: "some updated title", url: "some updated url", image_url: "some updated image_url", podcast_index_id: 43}
-  @invalid_attrs %{description: nil, author: nil, title: nil, url: nil, image_url: nil, podcast_index_id: nil}
+  @create_attrs %{
+    description: "some description",
+    author: "some author",
+    title: "some title",
+    url: "some url",
+    artwork: "some artwork",
+    podcast_index_id: 42
+  }
+  @update_attrs %{
+    description: "some updated description",
+    author: "some updated author",
+    title: "some updated title",
+    url: "some updated url",
+    artwork: "some updated artwork",
+    podcast_index_id: 43
+  }
+  @invalid_attrs %{
+    description: nil,
+    author: nil,
+    title: nil,
+    url: nil,
+    artwork: nil,
+    podcast_index_id: nil
+  }
   defp create_podcast(_) do
     podcast = podcast_fixture()
 

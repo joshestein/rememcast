@@ -18,7 +18,7 @@ defmodule Rememcast.ContentFixtures do
       |> Enum.into(%{
         author: "some author",
         description: "some description",
-        image_url: "some image_url",
+        artwork: "some artwork",
         podcast_index_id: unique_podcast_podcast_index_id(),
         title: "some title",
         url: "some url"

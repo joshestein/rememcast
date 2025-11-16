@@ -8,7 +8,14 @@ defmodule Rememcast.ContentTest do
 
     import Rememcast.ContentFixtures
 
-    @invalid_attrs %{description: nil, author: nil, title: nil, url: nil, image_url: nil, podcast_index_id: nil}
+    @invalid_attrs %{
+      description: nil,
+      author: nil,
+      title: nil,
+      url: nil,
+      artwork: nil,
+      podcast_index_id: nil
+    }
 
     test "list_podcasts/0 returns all podcasts" do
       podcast = podcast_fixture()
@@ -21,14 +28,21 @@ defmodule Rememcast.ContentTest do
     end
 
     test "create_podcast/1 with valid data creates a podcast" do
-      valid_attrs = %{description: "some description", author: "some author", title: "some title", url: "some url", image_url: "some image_url", podcast_index_id: 42}
+      valid_attrs = %{
+        description: "some description",
+        author: "some author",
+        title: "some title",
+        url: "some url",
+        artwork: "some artwork",
+        podcast_index_id: 42
+      }
 
       assert {:ok, %Podcast{} = podcast} = Content.create_podcast(valid_attrs)
       assert podcast.description == "some description"
       assert podcast.author == "some author"
       assert podcast.title == "some title"
       assert podcast.url == "some url"
-      assert podcast.image_url == "some image_url"
+      assert podcast.artwork == "some artwork"
       assert podcast.podcast_index_id == 42
     end
 
@@ -38,14 +52,22 @@ defmodule Rememcast.ContentTest do
 
     test "update_podcast/2 with valid data updates the podcast" do
       podcast = podcast_fixture()
-      update_attrs = %{description: "some updated description", author: "some updated author", title: "some updated title", url: "some updated url", image_url: "some updated image_url", podcast_index_id: 43}
+
+      update_attrs = %{
+        description: "some updated description",
+        author: "some updated author",
+        title: "some updated title",
+        url: "some updated url",
+        artwork: "some updated artwork",
+        podcast_index_id: 43
+      }
 
       assert {:ok, %Podcast{} = podcast} = Content.update_podcast(podcast, update_attrs)
       assert podcast.description == "some updated description"
       assert podcast.author == "some updated author"
       assert podcast.title == "some updated title"
       assert podcast.url == "some updated url"
-      assert podcast.image_url == "some updated image_url"
+      assert podcast.artwork == "some updated artwork"
       assert podcast.podcast_index_id == 43
     end
 

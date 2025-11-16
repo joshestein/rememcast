@@ -4,7 +4,7 @@ defmodule Rememcast.Repo.Migrations.CreatePodcasts do
   def change do
     create table(:podcasts) do
       add :title, :string
-      add :image_url, :string
+      add :artwork, :string
       add :podcast_index_id, :integer
       add :description, :text
       add :url, :string
