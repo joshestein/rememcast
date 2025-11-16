@@ -88,4 +88,70 @@ defmodule Rememcast.ContentTest do
       assert %Ecto.Changeset{} = Content.change_podcast(podcast)
     end
   end
+
+  describe "episodes" do
+    alias Rememcast.Content.Episode
+
+    import Rememcast.ContentFixtures
+
+    @invalid_attrs %{description: nil, title: nil, publish_date: nil, duration: nil, audio_url: nil, guid: nil, episode_index_id: nil}
+
+    test "list_episodes/0 returns all episodes" do
+      episode = episode_fixture()
+      assert Content.list_episodes() == [episode]
+    end
+
+    test "get_episode!/1 returns the episode with given id" do
+      episode = episode_fixture()
+      assert Content.get_episode!(episode.id) == episode
+    end
+
+    test "create_episode/1 with valid data creates a episode" do
+      valid_attrs = %{description: "some description", title: "some title", publish_date: ~U[2025-11-15 16:43:00Z], duration: 42, audio_url: "some audio_url", guid: "some guid", episode_index_id: 42}
+
+      assert {:ok, %Episode{} = episode} = Content.create_episode(valid_attrs)
+      assert episode.description == "some description"
+      assert episode.title == "some title"
+      assert episode.publish_date == ~U[2025-11-15 16:43:00Z]
+      assert episode.duration == 42
+      assert episode.audio_url == "some audio_url"
+      assert episode.guid == "some guid"
+      assert episode.episode_index_id == 42
+    end
+
+    test "create_episode/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Content.create_episode(@invalid_attrs)
+    end
+
+    test "update_episode/2 with valid data updates the episode" do
+      episode = episode_fixture()
+      update_attrs = %{description: "some updated description", title: "some updated title", publish_date: ~U[2025-11-16 16:43:00Z], duration: 43, audio_url: "some updated audio_url", guid: "some updated guid", episode_index_id: 43}
+
+      assert {:ok, %Episode{} = episode} = Content.update_episode(episode, update_attrs)
+      assert episode.description == "some updated description"
+      assert episode.title == "some updated title"
+      assert episode.publish_date == ~U[2025-11-16 16:43:00Z]
+      assert episode.duration == 43
+      assert episode.audio_url == "some updated audio_url"
+      assert episode.guid == "some updated guid"
+      assert episode.episode_index_id == 43
+    end
+
+    test "update_episode/2 with invalid data returns error changeset" do
+      episode = episode_fixture()
+      assert {:error, %Ecto.Changeset{}} = Content.update_episode(episode, @invalid_attrs)
+      assert episode == Content.get_episode!(episode.id)
+    end
+
+    test "delete_episode/1 deletes the episode" do
+      episode = episode_fixture()
+      assert {:ok, %Episode{}} = Content.delete_episode(episode)
+      assert_raise Ecto.NoResultsError, fn -> Content.get_episode!(episode.id) end
+    end
+
+    test "change_episode/1 returns a episode changeset" do
+      episode = episode_fixture()
+      assert %Ecto.Changeset{} = Content.change_episode(episode)
+    end
+  end
 end

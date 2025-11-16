@@ -10,6 +10,8 @@ defmodule Rememcast.Content.Podcast do
     field :url, :string
     field :author, :string
 
+    has_many :episodes, Rememcast.Content.Episode
+
     timestamps(type: :utc_datetime)
   end
 

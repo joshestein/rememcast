@@ -27,4 +27,24 @@ defmodule Rememcast.ContentFixtures do
 
     podcast
   end
+
+  @doc """
+  Generate a episode.
+  """
+  def episode_fixture(attrs \\ %{}) do
+    {:ok, episode} =
+      attrs
+      |> Enum.into(%{
+        audio_url: "some audio_url",
+        description: "some description",
+        duration: 42,
+        episode_index_id: 42,
+        guid: "some guid",
+        publish_date: ~U[2025-11-15 16:43:00Z],
+        title: "some title"
+      })
+      |> Rememcast.Content.create_episode()
+
+    episode
+  end
 end
