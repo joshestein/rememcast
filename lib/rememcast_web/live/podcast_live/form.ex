@@ -34,21 +34,22 @@ defmodule RememcastWeb.PodcastLive.Form do
         </div>
       </.form>
 
-      <%!-- <div id="search-results" phx-update class="mt-4">
+      <div id="search-results" phx-update="stream" class="mt-4">
         <div
-          :for={result <- @search_results}
+          :for={{id, result} <- @streams.search_results}
           class="flex items-center gap-4 p-2 rounded-lg hover:bg-base-200"
+          id={id}
         >
-          <img src={result["image_url"]} class="w-12 h-12 rounded-md" />
+          <img src={result.image_url} class="w-12 h-12 rounded-md" />
           <div class="flex-grow">
-            <div class="font-bold">{result["title"]}</div>
-            <div class="text-sm opacity-75">{result["author"]}</div>
+            <div class="font-bold">{result.title}</div>
+            <div class="text-sm opacity-75">{result.author}</div>
           </div>
-          <.button phx-click="select_podcast" phx-value-id={result["id"]} class="btn btn-sm">
+          <.button phx-click="select_podcast" phx-value-id={result.id} class="btn btn-sm">
             Select
           </.button>
         </div>
-      </div> --%>
+      </div>
 
       <.form for={@form} id="podcast-form" phx-change="validate" phx-submit="save">
         <.input field={@form[:title]} type="text" label="Title" />
