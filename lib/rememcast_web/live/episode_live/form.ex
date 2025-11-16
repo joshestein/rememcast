@@ -2,7 +2,6 @@ defmodule RememcastWeb.EpisodeLive.Form do
   use RememcastWeb, :live_view
 
   alias Rememcast.Content
-  alias Rememcast.Content.Episode
   alias Rememcast.Html
 
   @impl true
