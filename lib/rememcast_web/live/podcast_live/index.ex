@@ -8,7 +8,7 @@ defmodule RememcastWeb.PodcastLive.Index do
     ~H"""
     <Layouts.app flash={@flash}>
       <.header>
-        Listing Podcasts
+        Podcasts
         <:actions>
           <.button variant="primary" navigate={~p"/podcasts/new"}>
             <.icon name="hero-plus" /> New Podcast
@@ -22,10 +22,7 @@ defmodule RememcastWeb.PodcastLive.Index do
         row_click={fn {_id, podcast} -> JS.navigate(~p"/podcasts/#{podcast}") end}
       >
         <:col :let={{_id, podcast}} label="Title">{podcast.title}</:col>
-        <:col :let={{_id, podcast}} label="Image url">{podcast.image_url}</:col>
-        <:col :let={{_id, podcast}} label="Podcast index">{podcast.podcast_index_id}</:col>
         <:col :let={{_id, podcast}} label="Description">{podcast.description}</:col>
-        <:col :let={{_id, podcast}} label="Url">{podcast.url}</:col>
         <:col :let={{_id, podcast}} label="Author">{podcast.author}</:col>
         <:action :let={{_id, podcast}}>
           <div class="sr-only">
@@ -50,7 +47,7 @@ defmodule RememcastWeb.PodcastLive.Index do
   def mount(_params, _session, socket) do
     {:ok,
      socket
-     |> assign(:page_title, "Listing Podcasts")
+     |> assign(:page_title, "Podcasts")
      |> stream(:podcasts, list_podcasts())}
   end
 
