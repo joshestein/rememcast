@@ -20,6 +20,16 @@ if System.get_env("PHX_SERVER") do
   config :rememcast, RememcastWeb.Endpoint, server: true
 end
 
+config :rememcast,
+  podcast_index_api_key:
+    System.get_env("PODCAST_INDEX_API_KEY") ||
+      raise("environment variable PODCAST_INDEX_API_KEY is missing")
+
+config :rememcast,
+  podcast_index_secret_key:
+    System.get_env("PODCAST_INDEX_SECRET_KEY") ||
+      raise("environment variable PODCAST_INDEX_SECRET_KEY is missing")
+
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||
