@@ -110,13 +110,37 @@ defmodule RememcastWeb.PodcastLive.Form do
   def handle_event("search", %{"q" => query}, socket) do
     case search_podcast(query) do
       {:ok, results} ->
-        {:noreply, stream(socket, :search_results, results, reset: true)}
+        results_map = Map.new(results, fn result -> {result.id, result} end)
+
+        {:noreply,
+         socket
+         |> stream(:search_results, results, reset: true)
+         |> assign(:search_map, results_map)}
 
       {:error, _reason} ->
         {:noreply,
          socket
          |> put_flash(:error, "Podcast search failed")
-         |> stream(:search_results, [], reset: true)}
+         |> stream(:search_results, [], reset: true)
+         |> assign(:search_map, %{})}
+    end
+  end
+
+  def handle_event("select_podcast", %{"id" => id}, socket) do
+    selected_podcast = String.to_integer(id)
+
+    case Map.get(socket.assigns.search_map, selected_podcast) do
+      nil ->
+        {:noreply,
+         socket
+         |> put_flash(:error, "Selected podcast not found")}
+
+      selected_podcast ->
+        Logger.info("Selected podcast: #{inspect(selected_podcast)}")
+
+        {:noreply,
+         socket
+         |> assign(:form, to_form(Content.change_podcast(%Podcast{}, selected_podcast)))}
     end
   end
 
