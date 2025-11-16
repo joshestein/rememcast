@@ -137,7 +137,12 @@ defmodule RememcastWeb.EpisodeLive.Form do
          |> put_flash(:error, "Selected podcast not found")}
 
       selected_podcast ->
-        Logger.info("Selected podcast: #{inspect(selected_podcast)}")
+        episodes = search_podcast_episode(selected_podcast.id)
+
+        Logger.info(
+          "Selected podcast: #{inspect(selected_podcast)} with episodes: #{inspect(episodes)}"
+        )
+
         {:noreply, socket}
     end
   end
@@ -203,6 +208,48 @@ defmodule RememcastWeb.EpisodeLive.Form do
         description: feed["description"],
         author: feed["author"],
         artwork: feed["artwork"]
+      }
+    end)
+  end
+
+  defp search_podcast_episode(feed_id) do
+    api_key = Application.get_env(:rememcast, :podcast_index_api_key)
+    secret_key = Application.get_env(:rememcast, :podcast_index_secret_key)
+    unix_timestamp = System.os_time(:second)
+
+    sha1_hash =
+      :crypto.hash(:sha, "#{api_key}#{secret_key}#{unix_timestamp}")
+      |> Base.encode16(case: :lower)
+
+    case Req.get!("https://api.podcastindex.org/api/1.0/episodes/byfeedid",
+           headers: [
+             {"User-Agent", "RememCast/1.0"},
+             {"X-Auth-Key", api_key},
+             {"X-Auth-Date", unix_timestamp},
+             {"Authorization", sha1_hash}
+           ],
+           params: %{"id" => feed_id, "max" => 10}
+         ) do
+      %{status: 200, body: body} ->
+        results = parse_podcast_episode_results(body)
+        {:ok, results}
+
+      %{status: status} ->
+        {:error, "Podcast Index API returned status #{status}"}
+    end
+  end
+
+  defp parse_podcast_episode_results(%{"items" => items}) do
+    Enum.map(items, fn item ->
+      %{
+        id: item["id"],
+        title: item["title"],
+        description: item["description"],
+        publish_date: item["datePublished"],
+        duration: item["duration"],
+        audio_url: item["enclosureUrl"],
+        guid: item["guid"],
+        episode_index_id: item["episode"]
       }
     end)
   end
