@@ -51,6 +51,23 @@ defmodule RememcastWeb.EpisodeLive.Form do
         </div>
       </div>
 
+      <div id="episode-results" phx-update="stream" class="mt-4">
+        <div
+          :for={{id, episode} <- @streams.episodes}
+          class="flex items-center gap-4 p-2 rounded-lg hover:bg-base-200"
+          id={id}
+        >
+          <img src={episode.image} class="w-12 h-12 rounded-md" />
+          <div class="flex-grow">
+            <div class="font-bold">{episode.title}</div>
+            <div class="text-sm opacity-75">{episode.description}</div>
+          </div>
+          <.button phx-click="select_episode" phx-value-id={episode.id} class="btn btn-sm">
+            Select
+          </.button>
+        </div>
+      </div>
+
       <.form for={@form} id="episode-form" phx-change="validate" phx-submit="save">
         <.input field={@form[:title]} type="text" label="Title" />
         <.input field={@form[:description]} type="textarea" label="Description" />
@@ -74,6 +91,7 @@ defmodule RememcastWeb.EpisodeLive.Form do
      socket
      |> assign(:return_to, return_to(params["return_to"]))
      |> stream(:podcasts, [])
+     |> stream(:episodes, [])
      |> apply_action(socket.assigns.live_action, params)}
   end
 
@@ -137,13 +155,20 @@ defmodule RememcastWeb.EpisodeLive.Form do
          |> put_flash(:error, "Selected podcast not found")}
 
       selected_podcast ->
-        episodes = search_podcast_episode(selected_podcast.id)
+        case search_podcast_episode(selected_podcast.id) do
+          {:ok, episodes} ->
+            {:noreply,
+             socket
+             |> assign(:selected_podcast, selected_podcast)
+             |> stream(:podcasts, [], reset: true)
+             |> stream(:episodes, episodes, reset: true)}
 
-        Logger.info(
-          "Selected podcast: #{inspect(selected_podcast)} with episodes: #{inspect(episodes)}"
-        )
-
-        {:noreply, socket}
+          {:error, _reason} ->
+            {:noreply,
+             socket
+             |> put_flash(:error, "Podcast episode search failed")
+             |> stream(:episodes, [], reset: true)}
+        end
     end
   end
 
