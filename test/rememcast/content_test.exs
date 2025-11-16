@@ -101,7 +101,6 @@ defmodule Rememcast.ContentTest do
       duration: nil,
       audio_url: nil,
       guid: nil,
-      episode_number: nil,
       image: nil
     }
 
@@ -123,7 +122,6 @@ defmodule Rememcast.ContentTest do
         duration: 42,
         audio_url: "some audio_url",
         guid: "some guid",
-        episode_number: 42,
         image: "some image"
       }
 
@@ -134,7 +132,6 @@ defmodule Rememcast.ContentTest do
       assert episode.duration == 42
       assert episode.audio_url == "some audio_url"
       assert episode.guid == "some guid"
-      assert episode.episode_number == 42
       assert episode.image == "some image"
     end
 
@@ -152,7 +149,6 @@ defmodule Rememcast.ContentTest do
         duration: 43,
         audio_url: "some updated audio_url",
         guid: "some updated guid",
-        episode_number: 43,
         image: "some updated image"
       }
 
@@ -163,7 +159,6 @@ defmodule Rememcast.ContentTest do
       assert episode.duration == 43
       assert episode.audio_url == "some updated audio_url"
       assert episode.guid == "some updated guid"
-      assert episode.episode_number == 43
       assert episode.image == "some updated image"
     end
 
