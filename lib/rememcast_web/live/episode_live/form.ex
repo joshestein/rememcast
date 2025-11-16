@@ -167,7 +167,12 @@ defmodule RememcastWeb.EpisodeLive.Form do
              |> push_navigate(to: return_path(socket.assigns.return_to, episode))}
 
           {:error, %Ecto.Changeset{} = changeset} ->
-            {:noreply, assign(socket, form: to_form(changeset))}
+            errors = Ecto.Changeset.traverse_errors(changeset, fn {msg, _opt} -> msg end)
+
+            {:noreply,
+             socket
+             |> put_flash(:error, "Failed to save episode: #{inspect(errors)}")
+             |> stream(:episodes, [], reset: true)}
         end
 
       {:error, _changeset} ->
