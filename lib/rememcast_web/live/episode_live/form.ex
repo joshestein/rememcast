@@ -10,8 +10,46 @@ defmodule RememcastWeb.EpisodeLive.Form do
     <Layouts.app flash={@flash}>
       <.header>
         {@page_title}
-        <:subtitle>Use this form to manage episode records in your database.</:subtitle>
+        <:subtitle>Search for new episodes.</:subtitle>
       </.header>
+
+      <.form id="search-form" phx-submit="search">
+        <div class="flex flex-col gap-2">
+          <label class="input input-md">
+            <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <g
+                stroke-linejoin="round"
+                stroke-linecap="round"
+                stroke-width="2.5"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </g>
+            </svg>
+            <input name="q" type="search" class="grow" placeholder="What are you listening to?" />
+          </label>
+          <.button phx-disable-with="Searching..." variant="primary">Search</.button>
+        </div>
+      </.form>
+
+      <div id="search-results" phx-update="stream" class="mt-4">
+        <div
+          :for={{id, result} <- @streams.search_results}
+          class="flex items-center gap-4 p-2 rounded-lg hover:bg-base-200"
+          id={id}
+        >
+          <img src={result.artwork} class="w-12 h-12 rounded-md" />
+          <div class="flex-grow">
+            <div class="font-bold">{result.title}</div>
+            <div class="text-sm opacity-75">{result.author}</div>
+          </div>
+          <.button phx-click="select_podcast" phx-value-id={result.id} class="btn btn-sm">
+            Select
+          </.button>
+        </div>
+      </div>
 
       <.form for={@form} id="episode-form" phx-change="validate" phx-submit="save">
         <.input field={@form[:title]} type="text" label="Title" />
@@ -35,6 +73,7 @@ defmodule RememcastWeb.EpisodeLive.Form do
     {:ok,
      socket
      |> assign(:return_to, return_to(params["return_to"]))
+     |> stream(:search_results, [])
      |> apply_action(socket.assigns.live_action, params)}
   end
 
@@ -54,7 +93,7 @@ defmodule RememcastWeb.EpisodeLive.Form do
     episode = %Episode{}
 
     socket
-    |> assign(:page_title, "New Episode")
+    |> assign(:page_title, "Add Episode")
     |> assign(:episode, episode)
     |> assign(:form, to_form(Content.change_episode(episode)))
   end
@@ -67,6 +106,40 @@ defmodule RememcastWeb.EpisodeLive.Form do
 
   def handle_event("save", %{"episode" => episode_params}, socket) do
     save_episode(socket, socket.assigns.live_action, episode_params)
+  end
+
+  def handle_event("search", %{"q" => query}, socket) do
+    case search_podcast(query) do
+      {:ok, results} ->
+        results_map = Map.new(results, fn result -> {result.id, result} end)
+
+        {:noreply,
+         socket
+         |> stream(:search_results, results, reset: true)
+         |> assign(:search_map, results_map)}
+
+      {:error, _reason} ->
+        {:noreply,
+         socket
+         |> put_flash(:error, "Podcast search failed")
+         |> stream(:search_results, [], reset: true)
+         |> assign(:search_map, %{})}
+    end
+  end
+
+  def handle_event("select_podcast", %{"id" => id}, socket) do
+    selected_podcast = String.to_integer(id)
+
+    case Map.get(socket.assigns.search_map, selected_podcast) do
+      nil ->
+        {:noreply,
+         socket
+         |> put_flash(:error, "Selected podcast not found")}
+
+      selected_podcast ->
+        Logger.info("Selected podcast: #{inspect(selected_podcast)}")
+        {:noreply, socket}
+    end
   end
 
   defp save_episode(socket, :edit, episode_params) do
@@ -93,6 +166,45 @@ defmodule RememcastWeb.EpisodeLive.Form do
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}
     end
+  end
+
+  defp search_podcast(query) do
+    api_key = Application.get_env(:rememcast, :podcast_index_api_key)
+    secret_key = Application.get_env(:rememcast, :podcast_index_secret_key)
+    unix_timestamp = System.os_time(:second)
+
+    sha1_hash =
+      :crypto.hash(:sha, "#{api_key}#{secret_key}#{unix_timestamp}")
+      |> Base.encode16(case: :lower)
+
+    case Req.get!("https://api.podcastindex.org/api/1.0/search/byterm",
+           headers: [
+             {"User-Agent", "RememCast/1.0"},
+             {"X-Auth-Key", api_key},
+             {"X-Auth-Date", unix_timestamp},
+             {"Authorization", sha1_hash}
+           ],
+           params: %{"q" => query}
+         ) do
+      %{status: 200, body: body} ->
+        results = parse_podcast_results(body)
+        {:ok, results}
+
+      %{status: status} ->
+        {:error, "Podcast Index API returned status #{status}"}
+    end
+  end
+
+  defp parse_podcast_results(%{"feeds" => feeds}) do
+    Enum.map(feeds, fn feed ->
+      %{
+        id: feed["id"],
+        title: feed["title"],
+        description: feed["description"],
+        author: feed["author"],
+        artwork: feed["artwork"]
+      }
+    end)
   end
 
   defp return_path("index", _episode), do: ~p"/episodes"
