@@ -71,7 +71,7 @@ defmodule RememcastWeb.PodcastLive.Form do
     {:ok,
      socket
      |> assign(:return_to, return_to(params["return_to"]))
-     |> assign(:search_results, [])
+     |> stream(:search_results, [])
      |> apply_action(socket.assigns.live_action, params)}
   end
 
@@ -109,13 +109,13 @@ defmodule RememcastWeb.PodcastLive.Form do
   def handle_event("search", %{"q" => query}, socket) do
     case search_podcast(query) do
       {:ok, results} ->
-        {:noreply, assign(socket, search_results: results)}
+        {:noreply, stream(socket, :search_results, results, reset: true)}
 
       {:error, _reason} ->
         {:noreply,
          socket
          |> put_flash(:error, "Podcast search failed")
-         |> assign(search_results: [])}
+         |> stream(:search_results, [], reset: true)}
     end
   end
 
@@ -149,18 +149,18 @@ defmodule RememcastWeb.PodcastLive.Form do
     # TODO call API with query
     results = [
       %{
-        "id" => 1,
-        "title" => "Elixir Talk",
-        "description" => "A podcast about Elixir programming.",
-        "author" => "Elixir Community",
-        "image_url" => "https://example.com/elixir_talk.jpg"
+        id: 1,
+        title: "Elixir Talk",
+        description: "A podcast about Elixir programming.",
+        author: "Elixir Community",
+        image_url: "https://example.com/elixir_talk.jpg"
       },
       %{
-        "id" => 2,
-        "title" => "Phoenix Framework",
-        "description" => "All about the Phoenix web framework.",
-        "author" => "Phoenix Team",
-        "image_url" => "https://example.com/phoenix_framework.jpg"
+        id: 2,
+        title: "Phoenix Framework",
+        description: "All about the Phoenix web framework.",
+        author: "Phoenix Team",
+        image_url: "https://example.com/phoenix_framework.jpg"
       }
     ]
 
